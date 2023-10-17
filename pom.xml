@@ -14,16 +14,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.openjdk.jcstress</groupId>
-            <artifactId>jcstress-core</artifactId>
-            <version>0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjdk.jcstress</groupId>
-            <artifactId>jcstress-samples</artifactId>
-            <version>0.3</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
