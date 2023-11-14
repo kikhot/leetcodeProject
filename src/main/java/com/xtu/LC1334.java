@@ -11,9 +11,9 @@ public class LC1334 {
         // 构建邻接矩阵
         int[][] adjMatrix = new int[n][n];
         for (int i = 0; i < n; i++)
-            Arrays.fill(adjMatrix[i], Integer.MAX_VALUE);
+            Arrays.fill(adjMatrix[i], Integer.MAX_VALUE / 2);
 
-        for (int i = 0; i < edges.length; i++){
+        for (int i = 0; i < edges.length; i++) {
             adjMatrix[edges[i][0]][edges[i][1]] = edges[i][2];
             adjMatrix[edges[i][1]][edges[i][0]] = edges[i][2];
         }
