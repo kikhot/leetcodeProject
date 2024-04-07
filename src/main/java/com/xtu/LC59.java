@@ -1,32 +1,33 @@
 package com.xtu;
 
 public class LC59 {
-    public int[][] generateMatrix(int n){
-        int indexX = 0;
-        int indexY = 0;
-        int cycle = n/2;
+    public int[][] generateMatrix(int n) {
+        int xIndex = 0;
+        int yIndex = 0;
+        int loop = 0;
+
         int[][] resultNum = new int[n][n];
-        int count = 0;
-        for(int c=1;c<=cycle;c++){
-            int i,j;
-            for(j=indexY;j<n-c;j++){
-                resultNum[indexX][j] = ++count;
+        int start = 0;
+        int count = 1;
+
+        while (loop++ < n / 2) {
+            for (yIndex = start; yIndex < n - loop; yIndex++) {
+                resultNum[start][yIndex] = count++;
             }
-            for(i=indexX;i<n-c;i++){
-                resultNum[i][j] = ++count;
+            for (xIndex = start; xIndex < n - loop; xIndex++) {
+                resultNum[xIndex][yIndex] = count++;
             }
-            for(;j>indexY;j--){
-                resultNum[i][j] = ++count;
+            for (yIndex = n - loop; yIndex > start; yIndex--) {
+                resultNum[xIndex][yIndex] = count++;
             }
-            for(;i>indexX;i--){
-                resultNum[i][j] = ++count;
+            for (xIndex = n - loop; xIndex > start; xIndex--) {
+                resultNum[xIndex][yIndex] = count++;
             }
-            indexX++;
-            indexY++;
+            start++;
         }
-        //n为奇数，证明最后还有一层
-        if(n%2==1){
-            resultNum[indexX][indexY] = ++count;
+
+        if (n % 2 == 1) {
+            resultNum[start][start] = count;
         }
         return resultNum;
     }
