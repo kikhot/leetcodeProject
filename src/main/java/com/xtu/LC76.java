@@ -2,63 +2,48 @@ package com.xtu;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class LC76 {
+
+
     public static String minWindow(String s, String t) {
+        Map<Character, Integer> charNumMap = new HashMap<>();
+        for (Character ch : t.toCharArray()) {
+            charNumMap.merge(ch, 1, Integer::sum);
+        }
+        int slowIndex = 0;
         int resultLen = Integer.MAX_VALUE;
         String result = "";
-        int subLength = 0;
-        HashMap<Character, Integer> map = new HashMap<>();
-        HashMap<Character, Integer> processMap = new HashMap<>();
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < t.length(); i++) {
-            if (map.containsKey(t.charAt(i))) {
-                map.put(t.charAt(i), map.get(t.charAt(i)) + 1);
-            } else {
-                map.put(t.charAt(i), 1);
+        for (int fastIndex = 0; fastIndex < s.length(); fastIndex++) {
+            if (charNumMap.containsKey(s.charAt(fastIndex))) {
+                charNumMap.merge(s.charAt(fastIndex), -1, Integer::sum);
             }
-        }
-        int i = 0; //窗口第一个指针
-        // 滑动窗口
-        for (int j = 0; j < s.length(); j++) {
-            if (processMap.containsKey(s.charAt(j))) {
-                processMap.put(s.charAt(j), processMap.get(s.charAt(j)) + 1);
-            } else {
-                processMap.put(s.charAt(j), 1);
-            }
-            sb.append(s.charAt(j));
-            while (checkSub(map, processMap)) {
-                subLength = j - i + 1;
-                if(resultLen>subLength){
-                    resultLen = subLength;
-                    result = sb.toString();
+            while (hasAllT(charNumMap)) {
+                if (fastIndex - slowIndex + 1 < resultLen) {
+                    resultLen = fastIndex - slowIndex + 1;
+                    result = s.substring(slowIndex, fastIndex + 1);
                 }
-                if (processMap.get(s.charAt(i)) <= 1) {
-                    processMap.remove(s.charAt(i));
-                } else {
-                    processMap.put(s.charAt(i), processMap.get(s.charAt(i)) - 1);
+                if (charNumMap.containsKey(s.charAt(slowIndex))) {
+                    charNumMap.merge(s.charAt(slowIndex), 1, Integer::sum);
                 }
-                sb.delete(0,1);
-                i++;
+                slowIndex++;
             }
         }
         return result;
     }
 
-
-    public static boolean checkSub(HashMap<Character, Integer> map, HashMap<Character, Integer> processMap) {
-        for (char ch : map.keySet()) {
-            if (!processMap.containsKey(ch)) {
-                return false;
-            }
-            if (map.get(ch) > processMap.get(ch)) {
+    public static boolean hasAllT(Map<Character, Integer> charNumMap) {
+        for (Integer val : charNumMap.values()) {
+            if (val > 0) {
                 return false;
             }
         }
         return true;
     }
 
+
     public static void main(String[] args) {
-        minWindow("ADOBECODEBANC", "ABC");
+        System.out.println(minWindow("ADOBECODEBANC", "ABC"));
     }
 }
